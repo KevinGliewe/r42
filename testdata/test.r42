@@ -1,0 +1,7 @@
+<#
+pub fn render(buffer: &mut String) {
+#>
+
+<thing><#=(5+5)#></thing>
+
+<#}#>
