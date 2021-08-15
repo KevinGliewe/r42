@@ -1,10 +1,13 @@
+
 enum TemplateContext {
     Template,
     Code,
     Expression,
 }
 
-pub fn transform(input: &str) -> String {
+pub type Writer = fn(code_buffer: &mut String, template_buffer: &String);
+
+pub fn transform(input: &str, template_writer: &Writer, expression_writer: &Writer) -> String {
 
     let mut code_buffer = String::with_capacity((input.len() as f32 * 1.2f32) as usize);
     let mut expression_buffer = String::with_capacity(128);
@@ -29,12 +32,14 @@ pub fn transform(input: &str) -> String {
                     ('<', '#', '=') => {
                         idx += 2;
                         context = TemplateContext::Expression;
-                        write_template(&mut code_buffer, &mut template_buffer);
+                        template_writer(&mut code_buffer, &template_buffer);
+                        template_buffer.clear();
                     }
                     ('<', '#', _) => {
                         idx += 1;
                         context = TemplateContext::Code;
-                        write_template(&mut code_buffer, &mut template_buffer);
+                        template_writer(&mut code_buffer, &template_buffer);
+                        template_buffer.clear();
                     }
                     (_, _, _) => {
                         append_escaped(&mut template_buffer, c3.0);
@@ -58,7 +63,8 @@ pub fn transform(input: &str) -> String {
                     ('#', '>', _) => {
                         idx += 1;
                         context = TemplateContext::Template;
-                        write_expression(&mut code_buffer, &mut expression_buffer);
+                        expression_writer(&mut code_buffer, &expression_buffer);
+                        expression_buffer.clear();
                     }
                     (_, _, _) => {
                         expression_buffer.push(c3.0);
@@ -95,28 +101,4 @@ fn append_escaped(buffer: &mut String, c: char){
     } else {
         buffer.push(c);
     }
-}
-
-fn write_template(code_buffer: &mut String, template_buffer: &mut String){
-    if template_buffer.len() == 0 {
-        return;
-    }
-
-    let code = format!("buffer.push_str(\"{}\");", template_buffer);
-    template_buffer.clear();
-    code_buffer.push('\n');
-    code_buffer.push_str(code.as_str());
-    code_buffer.push('\n');
-}
-
-fn write_expression(code_buffer: &mut String, expression_buffer: &mut String){
-    if expression_buffer.len() == 0 {
-        return;
-    }
-
-    let code = format!("buffer.push_str(format!(\"{{:?}}\", {}).as_str());", expression_buffer);
-    expression_buffer.clear();
-    code_buffer.push('\n');
-    code_buffer.push_str(code.as_str());
-    code_buffer.push('\n');
 }

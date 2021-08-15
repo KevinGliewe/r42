@@ -6,8 +6,8 @@ on:
       - master
 
 jobs:
-  release:
-    name: Build and Release
+  bump:
+    name: Bump tag version
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -22,6 +22,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
         id: bump_version
+
+  release-linux:
+    name: Build and Release Linux
+    needs: bump
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build project
+        run: cargo build --release --locked
         
       - name: Upload binary to release
         uses: svenstaro/upload-release-action@v1-release
@@ -29,5 +40,25 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: target/release/r42
           asset_name: r42-linux-amd64
+          tag: ${{ steps.bump_version.outputs.new_tag }}
+          overwrite: true
+
+  release-windows:
+    name: Build and Release Windows
+    needs: bump
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build project
+        run: cargo build --release --locked
+        
+      - name: Upload binary to release
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: target/release/r42.exe
+          asset_name: r42-windows-amd64
           tag: ${{ steps.bump_version.outputs.new_tag }}
           overwrite: true
