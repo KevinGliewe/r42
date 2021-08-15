@@ -61,6 +61,6 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: target/release/r42.exe
-          asset_name: r42-windows-amd64
+          asset_name: r42-windows-amd64.exe
           tag: ${{ needs.bump.outputs.newtag }}
           overwrite: true
