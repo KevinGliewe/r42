@@ -25,10 +25,18 @@ jobs:
           WITH_V: true
         id: bump_version
 
-  release-linux:
+  release:
     name: Build and Release Linux
     needs: bump
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.config.os }}
+
+    strategy:
+      matrix:
+        config:
+          - { os: macos-latest, name: macos, extension: ""}
+          - { os: ubuntu-latest, name: linux, extension: "" }
+          - { os: windows-latest, name: windows, extension: ".exe" }
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -40,47 +48,7 @@ jobs:
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: target/release/r42
-          asset_name: r42-linux
-          tag: ${{ needs.bump.outputs.newtag }}
-          overwrite: true
-
-  release-macos:
-    name: Build and Release MacOS
-    needs: bump
-    runs-on: macos-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Build project
-        run: cargo build --release --locked
-        
-      - name: Upload binary to release
-        uses: svenstaro/upload-release-action@v1-release
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: target/release/r42
-          asset_name: r42-macos
-          tag: ${{ needs.bump.outputs.newtag }}
-          overwrite: true
-
-  release-windows:
-    name: Build and Release Windows
-    needs: bump
-    runs-on: windows-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Build project
-        run: cargo build --release --locked
-        
-      - name: Upload binary to release
-        uses: svenstaro/upload-release-action@v1-release
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: target/release/r42.exe
-          asset_name: r42-windows.exe
+          file: target/release/r42${{ matrix.config.extension }}
+          asset_name: r42-${{ matrix.config.name }}${{ matrix.config.extension }}
           tag: ${{ needs.bump.outputs.newtag }}
           overwrite: true
