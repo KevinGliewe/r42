@@ -1,5 +1,5 @@
 
-#[path = "r42t.rs"] mod r42t;
+#[path = "r42t.rs"] pub mod r42t;
 
 pub struct Language {
     pub name: &'static str,

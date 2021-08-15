@@ -5,7 +5,6 @@ use std::path::PathBuf;
 
 use glob::glob;
 
-mod r42t;
 mod langs;
 
 fn print_help() {
@@ -59,7 +58,7 @@ fn handle_file(template_path: &PathBuf) {
         }
     };
 
-    let code = r42t::transform(&contents, &lang.template_writer, &lang.expression_writer);
+    let code = langs::r42t::transform(&contents, &lang.template_writer, &lang.expression_writer);
     match fs::write(&out_path, code.as_bytes()) {
         Ok(_) => { }
         Err(e) => {
@@ -88,7 +87,7 @@ fn use_stdio(lang: &langs::Language) {
     let mut buf = String::new();
     stdin_reader.read_to_string(&mut buf).unwrap();
 
-    println!("{}", r42t::transform(&buf.as_str(), &lang.template_writer, &lang.expression_writer));
+    println!("{}", langs::r42t::transform(&buf.as_str(), &lang.template_writer, &lang.expression_writer));
 }
 
 
