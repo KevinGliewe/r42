@@ -26,7 +26,7 @@ jobs:
         id: bump_version
 
   release:
-    name: Build and Release Linux
+    name: Build and Release
     needs: bump
     runs-on: ${{ matrix.config.os }}
 
