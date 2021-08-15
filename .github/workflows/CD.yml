@@ -9,6 +9,8 @@ jobs:
   bump:
     name: Bump tag version
     runs-on: ubuntu-latest
+    outputs:
+      newtag: ${{ steps.bump_version.outputs.new_tag }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -40,7 +42,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: target/release/r42
           asset_name: r42-linux-amd64
-          tag: ${{ steps.bump_version.outputs.new_tag }}
+          tag: ${{ needs.bump.outputs.newtag }}
           overwrite: true
 
   release-windows:
@@ -60,5 +62,5 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: target/release/r42.exe
           asset_name: r42-windows-amd64
-          tag: ${{ steps.bump_version.outputs.new_tag }}
+          tag: ${{ needs.bump.outputs.newtag }}
           overwrite: true
