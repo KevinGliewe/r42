@@ -14,7 +14,18 @@ mod build_info {
 
 fn print_help() {
 
-    println!("r42 {} ({}) {}", build_info::GIT_VERSION.unwrap(), build_info::GIT_COMMIT_HASH.unwrap(), build_info::BUILT_TIME_UTC);
+    println!("r42 ({})", build_info::BUILT_TIME_UTC);
+
+    match build_info::GIT_VERSION {
+        Some(version) => println!("git version: {}", version),
+        None =>  { }
+    }
+
+    match build_info::GIT_COMMIT_HASH {
+        Some(hash) => println!("git commit hash: {}", hash),
+        None =>  { }
+    }
+
     println!("Usage: r42 [Language/Glob]");
     println!("  Language: (using stdio)");
     for l in langs::LENGUAGES {
