@@ -40,13 +40,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Find and Replace the version number
-        uses: jacobtomlinson/gha-find-replace@master
+      
+      - name: setup python
+        uses: actions/setup-python@v2
         with:
-          find: "version = \"0.0.0\""
-          replace: "version = \"${{ needs.bump.outputs.newtag }}\""
-          include: "Cargo.toml"
+          python-version: '3.7.9'
+
+      - name: Update Version
+        run: python scripts/update_version.py "${{ needs.bump.outputs.newtag }}"
 
       - name: Build project
         run: cargo build --release
