@@ -22,7 +22,7 @@ jobs:
         uses: anothrNick/github-tag-action@1.17.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: true
+          WITH_V: false
         id: bump_version
 
   release:
@@ -40,6 +40,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Find and Replace the version number
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          find: "version = \"0.0.0\""
+          replace: "version = \"${{ needs.bump.outputs.newtag }}\""
+          include: "Cargo.toml"
 
       - name: Build project
         run: cargo build --release --locked

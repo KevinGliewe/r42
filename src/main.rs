@@ -14,12 +14,7 @@ mod build_info {
 
 fn print_help() {
 
-    println!("r42 ({})", build_info::BUILT_TIME_UTC);
-
-    match build_info::GIT_VERSION {
-        Some(version) => println!("git version: {}", version),
-        None =>  { }
-    }
+    println!("r42 {} ({})",build_info::PKG_VERSION, build_info::BUILT_TIME_UTC);
 
     match build_info::GIT_COMMIT_HASH {
         Some(hash) => println!("git commit hash: {}", hash),
