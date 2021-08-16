@@ -7,15 +7,21 @@ use glob::glob;
 
 mod langs;
 
+mod build_info {
+    include!(concat!(env!("OUT_DIR"), "/built.rs"));
+}
+
+
 fn print_help() {
-    println!("r42");
-    println!("Usage: r42 [Language/Glob pattern]");
+
+    println!("r42 {} ({}) {}", build_info::GIT_VERSION.unwrap(), build_info::GIT_COMMIT_HASH.unwrap(), build_info::BUILT_TIME_UTC);
+    println!("Usage: r42 [Language/Glob]");
     println!("  Language: (using stdio)");
     for l in langs::LENGUAGES {
         println!("    r42 {:?}", l.name);
     }
-    println!("  Glob pattern: (using filesystem, files like 'file.rs.r42')");
-    println!("    directory/*.r42");
+    println!("  Glob: (using filesystem, files like 'file.rs.r42')");
+    println!("    r42 \"directory/*.r42\"");
 }
 
 fn handle_file(template_path: &PathBuf) {

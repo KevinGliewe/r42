@@ -2,8 +2,11 @@
 name = "r42"
 version = "0.1.0"
 edition = "2018"
+build = "build.rs"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[build-dependencies]
+built = { version = "0.5", features = ["git2", "chrono", "semver"] }
+
 
 [dependencies]
 glob = "0.3.0"
