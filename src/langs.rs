@@ -43,22 +43,22 @@ fn csharp_expression_writer(code_buffer: &mut String, expression_buffer: &String
 
 fn java_template_writer(code_buffer: &mut String, template_buffer: &String){
     if template_buffer.len() == 0 { return; }
-    code_buffer.push_str(format!("\nbuffer.write(\"{}\")\n", template_buffer).as_str());
+    code_buffer.push_str(format!("\nbuffer.write(\"{}\");\n", template_buffer).as_str());
 }
 
 fn java_expression_writer(code_buffer: &mut String, expression_buffer: &String){
     if expression_buffer.len() == 0 { return;}
-    code_buffer.push_str(format!("\nbuffer.write(({}).toString())\n", expression_buffer).as_str());
+    code_buffer.push_str(format!("\nbuffer.write(({}).toString());\n", expression_buffer).as_str());
 }
 
 // JavaScript
 
 fn javascript_template_writer(code_buffer: &mut String, template_buffer: &String){
     if template_buffer.len() == 0 { return; }
-    code_buffer.push_str(format!("\nwrite(\"{}\")\n", template_buffer).as_str());
+    code_buffer.push_str(format!("\nwrite(\"{}\");\n", template_buffer).as_str());
 }
 
 fn javascript_expression_writer(code_buffer: &mut String, expression_buffer: &String){
     if expression_buffer.len() == 0 { return;}
-    code_buffer.push_str(format!("\nwrite({})\n", expression_buffer).as_str());
+    code_buffer.push_str(format!("\nwrite({});\n", expression_buffer).as_str());
 }
