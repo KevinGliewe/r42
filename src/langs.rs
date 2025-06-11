@@ -1,6 +1,7 @@
 
 #[path = "r42t.rs"] pub mod r42t;
 
+#[derive(Copy, Clone)]
 pub struct Language {
     pub name: &'static str,
     pub extension: &'static str,
