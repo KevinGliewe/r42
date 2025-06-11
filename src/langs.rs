@@ -9,7 +9,7 @@ pub struct Language {
     pub expression_writer: r42t::Writer,
 }
 
-pub const LENGUAGES: [Language; 5] = [
+pub const LANGUAGES: [Language; 5] = [
     Language {name: "Rust", extension: "rs", template_writer: rust_template_writer, expression_writer: rust_expression_writer},
     Language {name: "C#", extension: "cs", template_writer: csharp_template_writer, expression_writer: csharp_expression_writer},
     Language {name: "Java", extension: "java", template_writer: java_template_writer, expression_writer: java_expression_writer},
