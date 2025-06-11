@@ -23,7 +23,7 @@ fn print_help() {
 
     println!("Usage: r42 [Language/Glob]");
     println!("  Language: (using stdio)");
-    for l in langs::LENGUAGES {
+    for l in langs::LANGUAGES {
         println!("    r42 {:?}", l.name);
     }
     println!("  Glob: (using filesystem, files like 'file.rs.r42')");
@@ -54,7 +54,7 @@ fn handle_file(template_path: &PathBuf) {
         },
     };
 
-    let lang = match langs::LENGUAGES.iter().filter(|l| l.extension == extension.to_string()).nth(0) {
+    let lang = match langs::LANGUAGES.iter().filter(|l| l.extension == extension.to_string()).nth(0) {
         Some(l) => l,
         None => {
             println!("No language found for extension {:?}", extension);
@@ -107,7 +107,7 @@ fn main() {
 
     let args: Vec<String> = ::std::env::args().collect();
 
-    let lang = &langs::LENGUAGES[0];
+    let lang = &langs::LANGUAGES[0];
 
     if args.len() < 2 {
         use_stdio(&lang);
@@ -115,7 +115,7 @@ fn main() {
         if args[1] == "--help" {
             print_help();
         } else {
-            match langs::LENGUAGES.iter().filter(|l| l.name == &args[1]).nth(0) {
+            match langs::LANGUAGES.iter().filter(|l| l.name == &args[1]).nth(0) {
                 Some(l) => { use_stdio(&l) },
                 None => { use_glob(&args[1]);},
             }
