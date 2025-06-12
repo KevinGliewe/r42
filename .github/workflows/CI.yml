@@ -1,5 +1,4 @@
-name: Build, bump tag version and release
-
+name: Run Tests
 on:
   push:
     branches:
@@ -20,6 +19,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       - name: Cargo test
         run: cargo test

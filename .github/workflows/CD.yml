@@ -16,6 +16,9 @@ jobs:
       - name: Build project
         run: cargo build --release --locked
 
+      - name: Test project
+        run: cargo test --release
+
       - name: Bump version and push tag/create release point
         uses: anothrNick/github-tag-action@1.73.0
         env:
