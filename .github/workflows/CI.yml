@@ -16,7 +16,10 @@ jobs:
           - { os: macos-latest, name: macos, extension: ""}
           - { os: ubuntu-latest, name: linux, extension: "" }
           - { os: windows-latest, name: windows, extension: ".exe" }
-          
+
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
       - name: Cargo test
         run: cargo test
