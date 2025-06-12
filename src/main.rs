@@ -23,7 +23,7 @@ fn print_help() {
 
     println!("Usage: r42 [Language/Glob]");
     println!("  Language: (using stdio)");
-    for l in langs::LANGUAGES {
+    for l in langs::LANGUAGES.iter() {
         println!("    r42 {:?}", l.name);
     }
     println!("  Glob: (using filesystem, files like 'file.rs.r42')");
