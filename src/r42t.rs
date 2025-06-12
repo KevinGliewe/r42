@@ -142,4 +142,24 @@ mod tests {
         let result = transform("<#=42", &(capture_template as Writer), &(capture_expression as Writer));
         assert_eq!(result, "42");
     }
+
+    #[test]
+    fn parses_code_and_expression_blocks() {
+        let result = transform("<#let x = 5;#>value:<#=x#>", &(capture_template as Writer), &(capture_expression as Writer));
+        assert_eq!(result, "let x = 5;value:x");
+    }
+
+    #[test]
+    fn escapes_special_characters() {
+        let input = "\"\n\r\t\\\0";
+        let result = transform(input, &(capture_template as Writer), &(capture_expression as Writer));
+        assert_eq!(result, "\\\"\\n\\r\\t\\\\\\0");
+    }
+
+    #[test]
+    fn handles_unicode() {
+        let input = "café";
+        let result = transform(input, &(capture_template as Writer), &(capture_expression as Writer));
+        assert_eq!(result, "café");
+    }
 }
