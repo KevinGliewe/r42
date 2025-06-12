@@ -95,6 +95,47 @@ pub fn transform(input: &str, template_writer: &Writer, expression_writer: &Writ
     code_buffer
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn capture_template(code: &mut String, buf: &String) {
+        code.push_str(buf);
+    }
+
+    fn capture_expression(code: &mut String, buf: &String) {
+        code.push_str(buf);
+    }
+
+    #[test]
+    fn flushes_trailing_template() {
+        let result = transform("hello", &(capture_template as Writer), &(capture_expression as Writer));
+        assert_eq!(result, "hello");
+    }
+
+    #[test]
+    fn flushes_trailing_expression() {
+        let result = transform("<#=42", &(capture_template as Writer), &(capture_expression as Writer));
+        assert_eq!(result, "42");
+    }
+}
+            if !template_buffer.is_empty() {
+                template_writer(&mut code_buffer, &template_buffer);
+            }
+        }
+        TemplateContext::Expression => {
+            if !expression_buffer.is_empty() {
+                expression_writer(&mut code_buffer, &expression_buffer);
+            }
+        }
+        TemplateContext::Code => {
+            // Remaining code fragments have already been pushed directly.
+        }
+    }
+
+    code_buffer
+}
+
 fn append_escaped(buffer: &mut String, c: char){
     if c == '"' {
         buffer.push('\\');
