@@ -1,0 +1,22 @@
+name: Build, bump tag version and release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    name: Build and run Tests
+    runs-on: ${{ matrix.config.os }}
+
+    strategy:
+      matrix:
+        config:
+          - { os: macos-latest, name: macos, extension: ""}
+          - { os: ubuntu-latest, name: linux, extension: "" }
+          - { os: windows-latest, name: windows, extension: ".exe" }
+          
+    steps:
+      - name: Cargo test
+        run: cargo test
