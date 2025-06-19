@@ -52,3 +52,11 @@ The second form converts all matching templates on disk. The example template
 `testdata/test.rs.r42` is converted into `testdata/test.rs` and demonstrates how
 the tool works.
 
+## Template Syntax
+
+Template files interleave raw text with code blocks surrounded by `<#` and `#>`.
+Expression blocks begin with `<#=` and their result is written into the output.
+Any other code blocks are copied verbatim. Special characters in template text
+are escaped automatically so the generated code produces the exact same text at
+runtime.
+
